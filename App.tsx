@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+
+import utilities from "./tailwind.json";
+import { TailwindProvider } from "tailwind-rn";
+
+import { NavigationContainer } from "@react-navigation/native";
+import RootNavigator from "./navigator/RootNavigator";
+
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { LocalStepZenURL } from "@env";
+
+const client = new ApolloClient({
+  uri: LocalStepZenURL,
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    // @ts-ignore - Tailwind Provider A Missing Defination
+    <TailwindProvider utilities={utilities}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </ApolloProvider>
+    </TailwindProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
